@@ -1,0 +1,27 @@
+{
+  "name": "firstvisualization",
+  "version": "1.0.0",
+  "description": "Teo Asinari's First Visualization with Three.js",
+  "main": "src/js/firstvisualization.js",
+  "dependencies": {
+
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TAAdSM/FirstVisualization.git"
+  },
+  "keywords": [
+    "ThreeJS",
+    "Visualization",
+    "Art"
+  ],
+  "author": "Teo Asinari",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TAAdSM/FirstVisualization/issues"
+  },
+  "homepage": "https://github.com/TAAdSM/FirstVisualization#readme"
+}
