@@ -1,4 +1,14 @@
-import {Mesh, MeshPhysicalMaterial, SphereGeometry, Vector3} from "three";
+import {
+    Mesh,
+    OctahedronGeometry,
+    SphereGeometry,
+    TorusKnotGeometry,
+    Vector3
+} from "three";
+import {
+    dragonTorusMaterial,
+    genericPhysicalMaterial
+} from "../materials/materials";
 
 class shapesArray3D {
     constructor(origin = new Vector3(0, 0, 0), rowSize = 5, colSize = 5,
@@ -14,27 +24,38 @@ class shapesArray3D {
     getSphere(xOffset, yOffset, zOffset) {
         let geometry = new SphereGeometry(1,10, 10);
         geometry.translate(xOffset, yOffset, zOffset);
-        let material = new MeshPhysicalMaterial({color: "green",
-            roughness: 0.5,
-            metalness: 0.5,
-            clearcoat: 0.5,
-            clearcoatRoughness: 0.5,
-            reflectivity: 0.9});
-        return new Mesh(geometry, material);
+        return new Mesh(geometry, genericPhysicalMaterial);
     }
 
-    populate3DShapesGrid(scene) {
-        this.initializeShapes();
+    getOctahedron(xOffset, yOffset, zOffset) {
+        let geometry = new OctahedronGeometry(1, 1);
+        geometry.translate(xOffset, yOffset, zOffset);
+        return new Mesh(geometry, dragonTorusMaterial);
+    }
 
-        for (let horiz_index = 0; horiz_index < this.rowSize; horiz_index++) {
-            for (let vert_index = 0; vert_index < this.colSize; vert_index++) {
-                for (let depth_index = 0; depth_index < this.depthSize; depth_index++) {
-                    this.shapes[horiz_index][vert_index][depth_index] =
-                        this.getShape(horiz_index, vert_index, depth_index);
-                    scene.add(this.shapes[horiz_index][vert_index][depth_index]);
-                }
-            }
-        }
+    getDragonTorusKnot(xOffset, yOffset, zOffset) {
+        let geometry = new TorusKnotGeometry( 1, 0.4,
+            112, 15, 9, 12);
+        geometry.translate(xOffset, yOffset, zOffset);
+        return new Mesh(geometry, dragonTorusMaterial);
+    }
+
+    getSmoothTorusKnot(xOffset, yOffset, zOffset) {
+        let geometry = new TorusKnotGeometry( 1, 0.4,
+            112, 15);
+        geometry.translate(xOffset, yOffset, zOffset);
+        return new Mesh(geometry, genericPhysicalMaterial);
+    }
+
+    getShape(horiz_index, vert_index, depth_index) {
+        let xOffset = (horiz_index - this.rowSize / 2) * this.spacingFactor;
+        let yOffset = (vert_index - this.rowSize / 2) * this.spacingFactor;
+        let zOffset = -depth_index * this.spacingFactor;
+
+        let shapeFunctions = [this.getSphere, this.getOctahedron, this.getDragonTorusKnot, this.getSmoothTorusKnot];
+        let roll = (horiz_index + vert_index + depth_index) % 4;
+
+        return shapeFunctions[roll](xOffset, yOffset, zOffset);
     }
 
     initializeShapes() {
@@ -49,17 +70,25 @@ class shapesArray3D {
         }
     }
 
-    getShape(horiz_index, vert_index, depth_index) {
-        return this.getSphere((horiz_index - this.rowSize / 2) * this.spacingFactor,
-            (vert_index - this.rowSize / 2) * this.spacingFactor,
-            -depth_index * this.spacingFactor);
-    }
-
     rotateShapes() {
         for (let horiz_index = 0; horiz_index < this.rowSize; horiz_index++) {
             for (let vert_index = 0; vert_index < this.colSize; vert_index++) {
                 for (let depth_index = 0; depth_index < this.depthSize; depth_index++) {
                     this.shapes[horiz_index][vert_index][depth_index].rotation.z += 0.01;
+                }
+            }
+        }
+    }
+
+    populate3DShapesGrid(scene) {
+        this.initializeShapes();
+
+        for (let horiz_index = 0; horiz_index < this.rowSize; horiz_index++) {
+            for (let vert_index = 0; vert_index < this.colSize; vert_index++) {
+                for (let depth_index = 0; depth_index < this.depthSize; depth_index++) {
+                    this.shapes[horiz_index][vert_index][depth_index] =
+                        this.getShape(horiz_index, vert_index, depth_index);
+                    scene.add(this.shapes[horiz_index][vert_index][depth_index]);
                 }
             }
         }
