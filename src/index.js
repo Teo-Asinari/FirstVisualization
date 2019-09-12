@@ -1,14 +1,12 @@
 import {
     AmbientLight,
     HemisphereLight,
-    Mesh,
-    MeshPhysicalMaterial,
     PerspectiveCamera,
     PointLight,
-    Scene,
-    SphereGeometry,
+    Scene, Vector3,
     WebGLRenderer
 } from "three";
+import shapesArray3D from "./compoundShapes/shapesArray3D";
 
 let scene = new Scene();
 let ambientLight = new AmbientLight('red', 0.01);
@@ -33,53 +31,15 @@ let renderer = new WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const rowSize = 10;
-const colSize = 10;
-const depthSize = 100;
-const spacingFactor = 5;
-let spheresArray3D = [];
+const arrayOfShapes = new shapesArray3D(new Vector3(0, 0, 0), 10, 10);
+arrayOfShapes.populate3DShapesGrid(scene);
 
-function getSphere(xOffset, yOffset, zOffset) {
-    let geometry = new SphereGeometry(1,10, 10);
-    geometry.translate(xOffset, yOffset, zOffset);
-    let material = new MeshPhysicalMaterial({color: "green",
-        roughness: 0.5,
-        metalness: 0.5,
-        clearcoat: 0.5,
-        clearcoatRoughness: 0.5,
-        reflectivity: 0.9});
-    return new Mesh(geometry, material);
-}
-
-
-for (let horiz_index = 0; horiz_index < rowSize; horiz_index++) {
-    spheresArray3D.push(new Array(colSize));
-    for (let vert_index = 0; vert_index < colSize; vert_index++) {
-        spheresArray3D[horiz_index][vert_index] = new Array(depthSize);
-        for (let depth_index = 0; depth_index < depthSize; depth_index++) {
-            spheresArray3D[horiz_index][vert_index][depth_index] =
-                getSphere((horiz_index - rowSize / 2) * spacingFactor,
-                    (vert_index - rowSize / 2) * spacingFactor,
-                    -depth_index * spacingFactor);
-            scene.add(spheresArray3D[horiz_index][vert_index][depth_index]);
-        }
-    }
-}
-
-console.log(spheresArray3D);
 
 camera.position.z = 5;
 
 function animate() {
     requestAnimationFrame(animate);
-
-    for (let horiz_index = 0; horiz_index < rowSize; horiz_index++) {
-        for (let vert_index = 0; vert_index < colSize; vert_index++) {
-            for (let depth_index = 0; depth_index < depthSize; depth_index++) {
-                spheresArray3D[horiz_index][vert_index][depth_index].rotation.z += 0.01;
-            }
-        }
-    }
+    arrayOfShapes.rotateShapes();
     renderer.render(scene, camera);
 }
 
