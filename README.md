@@ -15,6 +15,4 @@ nodemon call conserve the number of tabs to just one. But, if you have a mac
 2. `nodemon --ignore ./dist --exec npm run start`
 
 ## Here's a look at the current state of the visualization:
-<video width="640" height="480" controls>
-  <source src="thumbnails/FirstVisualization_Thumbnail.mov" type="video/mp4">
-</video>
+![The thumbnail ought to be here. Uh oh ...](thumbnails/FirstVisualization_Thumbnail.gif)
