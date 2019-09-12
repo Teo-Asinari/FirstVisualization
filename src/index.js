@@ -1,17 +1,26 @@
 import {
     AmbientLight,
-    BoxGeometry,
+    HemisphereLight,
     Mesh,
-    MeshLambertMaterial,
-    PerspectiveCamera, RepeatWrapping,
-    Scene, Vector3,
+    MeshPhysicalMaterial,
+    PerspectiveCamera,
+    PointLight,
+    Scene,
+    SphereGeometry,
     WebGLRenderer
 } from "three";
-import {TextureLoader} from "three/src/loaders/TextureLoader";
 
 let scene = new Scene();
-let ambientLight = new AmbientLight(0x404040);
+let ambientLight = new AmbientLight('red', 0.01);
 scene.add(ambientLight);
+
+
+let pointLight = new PointLight( 'red', 3, 150, 2 );
+pointLight.position.set( 0,0,0 );
+scene.add( pointLight );
+
+let hemisphereLight = new HemisphereLight( 'white', 'red', 1 );
+scene.add(hemisphereLight);
 
 let fov = 75;
 let aspect = window.innerWidth / window.innerHeight;
@@ -28,35 +37,36 @@ const rowSize = 10;
 const colSize = 10;
 const depthSize = 100;
 const spacingFactor = 5;
-let cubesArray3D = [];
+let spheresArray3D = [];
 
-function getCube(xOffset, yOffset, zOffset) {
-    let geometry = new BoxGeometry(1, 1, 1);
+function getSphere(xOffset, yOffset, zOffset) {
+    let geometry = new SphereGeometry(1,10, 10);
     geometry.translate(xOffset, yOffset, zOffset);
-    let texture = new TextureLoader().load("./assets/textures/texture-1909992__340.jpg");
-    texture.wrapS = RepeatWrapping;
-    texture.wrapT = RepeatWrapping;
-    texture.repeat.set(4, 4);
-    let material = new MeshLambertMaterial({color: 0x00ff00, alphaMap: texture});
+    let material = new MeshPhysicalMaterial({color: "green",
+        roughness: 0.5,
+        metalness: 0.5,
+        clearcoat: 0.5,
+        clearcoatRoughness: 0.5,
+        reflectivity: 0.9});
     return new Mesh(geometry, material);
 }
 
 
 for (let horiz_index = 0; horiz_index < rowSize; horiz_index++) {
-    cubesArray3D.push(new Array(colSize));
+    spheresArray3D.push(new Array(colSize));
     for (let vert_index = 0; vert_index < colSize; vert_index++) {
-        cubesArray3D[horiz_index][vert_index] = new Array(depthSize);
+        spheresArray3D[horiz_index][vert_index] = new Array(depthSize);
         for (let depth_index = 0; depth_index < depthSize; depth_index++) {
-            cubesArray3D[horiz_index][vert_index][depth_index] =
-                getCube((horiz_index - rowSize / 2) * spacingFactor,
+            spheresArray3D[horiz_index][vert_index][depth_index] =
+                getSphere((horiz_index - rowSize / 2) * spacingFactor,
                     (vert_index - rowSize / 2) * spacingFactor,
                     -depth_index * spacingFactor);
-            scene.add(cubesArray3D[horiz_index][vert_index][depth_index]);
+            scene.add(spheresArray3D[horiz_index][vert_index][depth_index]);
         }
     }
 }
 
-console.log(cubesArray3D);
+console.log(spheresArray3D);
 
 camera.position.z = 5;
 
@@ -66,8 +76,7 @@ function animate() {
     for (let horiz_index = 0; horiz_index < rowSize; horiz_index++) {
         for (let vert_index = 0; vert_index < colSize; vert_index++) {
             for (let depth_index = 0; depth_index < depthSize; depth_index++) {
-                cubesArray3D[horiz_index][vert_index][depth_index].rotation.z += 0.01;
-                cubesArray3D[horiz_index][vert_index][depth_index].position.add(new Vector3(0,-0.01, -0.01));
+                spheresArray3D[horiz_index][vert_index][depth_index].rotation.z += 0.01;
             }
         }
     }
