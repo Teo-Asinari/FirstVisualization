@@ -7,5 +7,14 @@
 3. View dist/index.html in your browser.
 
 ## For development
+I would recommend just using `npm run start` and manually re-calling this 
+each time a code change is made. I have yet to solve the problem of having the 
+nodemon call conserve the number of tabs to just one. But, if you have a mac
+, you may play around with it:
 1. `npm install -g nodemon` 
-`nodemon --ignore ./dist --exec npm run start`
+2. `nodemon --ignore ./dist --exec npm run start`
+
+## Here's a look at the current state of the visualization:
+<video width="640" height="480" controls>
+  <source src="thumbnails/FirstVisualization_Thumbnail.mov" type="video/mp4">
+</video>

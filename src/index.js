@@ -31,7 +31,7 @@ let renderer = new WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const arrayOfShapes = new shapesArray3D(new Vector3(0, 0, 0), 7, 7, 20);
+const arrayOfShapes = new shapesArray3D(new Vector3(0, 0, 0), 7, 7, 20, 7);
 arrayOfShapes.populate3DShapesGrid(scene);
 
 camera.position.z = 5;
