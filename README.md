@@ -15,4 +15,4 @@ nodemon call conserve the number of tabs to just one. But, if you have a mac
 2. `nodemon --ignore ./dist --exec npm run start`
 
 ## Here's a look at the current state of the visualization:
-![The thumbnail ought to be here. Uh oh ...](thumbnails/FirstVisualization_Thumbnail.gif)
+![The thumbnail ought to be here. Uh oh ...](thumbnails/FirstVisualization_Thumbnail2.gif)

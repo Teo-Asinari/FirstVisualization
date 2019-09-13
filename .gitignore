@@ -1,4 +1,5 @@
 ./dist/main.js
 ./dist/bundle.js
+./thumbnails/*.mov
 node_modules/*
 .idea/*
