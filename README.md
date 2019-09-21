@@ -6,6 +6,9 @@
 `npm run start`
 3. View dist/index.html in your browser.
 
+Note: if you have a mac and chrome installed, try 
+`npm run view`, it should also boot up a chrome window with the visualization
+
 ## For development
 I would recommend just using `npm run start` and manually re-calling this 
 each time a code change is made. I have yet to solve the problem of having the 
